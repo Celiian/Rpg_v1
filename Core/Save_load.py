@@ -2,7 +2,7 @@ from Core import Functions
 from Hero_class import Hero, Paladin, Assasin, Mage
 
 def load():
-    file = "/Users/celian/PycharmProjects/Projet_rpg_v2/save"
+    file = "Saves/save"
     list_line = []
     with open(file, 'r') as f:
         line = f.readline()
@@ -123,7 +123,7 @@ def load():
 
 
 def save(player, shadow_player, arena, actual_arena, monster_kill):
-    file = "save"
+    file = "Saves/save"
     with open(file, 'w') as f:
         f.write(f"player name:{player.name}-class:{player.class_name}-level:{player.level}-xp:{player.xp}"
                 f"-speed:{player.speed}-atk:{player.atk}-max_hp:{player.hp}-max_mana:{player.mana}"

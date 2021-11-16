@@ -5,7 +5,7 @@ from Dictionnary import Arena_dictionnary, Monster_dictionnary, Skill_dictionnar
 
 game = True
 loaded = False
-if not Functions.file_is_empty('save'):
+if not Functions.file_is_empty('Saves/save'):
     print("Voulez vous charger les données sauvegardés ? (y / n)")
     choice = input()
 
