@@ -1,7 +1,7 @@
 import Dictionnary.Arena_dictionnary
 from Core import Functions, MessageFunctions, Save_load
 from Dictionnary import Arena_dictionnary, Monster_dictionnary, Skill_dictionnary
-
+from Inventory import Item, InventoryPlayer
 
 game = True
 loaded = False
@@ -35,6 +35,7 @@ while game:
     Functions.clear()
     monster_left = monster_needed - monster_kill
     MessageFunctions.menu(arena, shadow_player, monster_left)
+
     choice = input()
     if choice == str(1):
         monster_killed = Functions.monster_fight(arena["monster_level"], shadow_player, player)
@@ -42,8 +43,10 @@ while game:
         Functions.clear()
         Functions.display_stat(player, shadow_player)
     if choice == str(3):
-        Save_load.save(player, shadow_player, arena, actual_arena, monster_kill)
+        Functions.shop(player)
     if choice == str(4):
+        Save_load.save(player, shadow_player, arena, actual_arena, monster_kill)
+    if choice == str(5):
         choice2 = input("\n\nDo you want to load the last saved game ? (y / n)\n")
         if choice2 == "y":
             dict_info = Save_load.load()
@@ -52,7 +55,7 @@ while game:
             player = dict_info["player"]
             shadow_player = dict_info["shadow_player"]
 
-    if choice == str(5):
+    if choice == str(6):
         game = False
         Functions.clear()
 
@@ -81,6 +84,8 @@ while game:
     if player.level % 2 != 0 :
         skill_atributed = False
 
+    if shadow_player.mana > player.mana:
+        shadow_player.mana = player.mana
     shadow_player.level = player.level
     shadow_player.xp = player.xp
 
