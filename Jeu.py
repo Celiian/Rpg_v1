@@ -6,19 +6,21 @@ from Inventory import Item, InventoryPlayer
 game = True
 loaded = False
 if not Functions.file_is_empty('Saves/save'):
-    print("Voulez vous charger les données sauvegardés ? (y / n)")
+    print("Do you want to load the saved data ? (y / n)")
     choice = input()
 
     if choice == "y":
-        dict_info = Save_load.load()
-        actual_arena = dict_info["actual_arena"]
-        monster_kill = dict_info["monster_kill"]
-        player = dict_info["player"]
-        shadow_player = dict_info["shadow_player"]
-        loaded = True
-        skill_atributed = True
+        dict_info = Save_load.load_choose()
+        if dict_info != 0:
+            actual_arena = dict_info["actual_arena"]
+            monster_kill = dict_info["monster_kill"]
+            player = dict_info["player"]
+            shadow_player = dict_info["shadow_player"]
+            loaded = True
+            skill_atributed = True
 
 if not loaded:
+    Functions.space()
     MessageFunctions.game_explain()
     list_p = Functions.character_create()
     player = list_p[0]
@@ -45,15 +47,16 @@ while game:
     if choice == str(3):
         Functions.shop(player)
     if choice == str(4):
-        Save_load.save(player, shadow_player, arena, actual_arena, monster_kill)
+        Save_load.save_choose(player, shadow_player, arena, actual_arena, monster_kill)
     if choice == str(5):
-        choice2 = input("\n\nDo you want to load the last saved game ? (y / n)\n")
-        if choice2 == "y":
-            dict_info = Save_load.load()
+        dict_info = Save_load.load_choose()
+        if dict_info != 0:
             actual_arena = dict_info["actual_arena"]
             monster_kill = dict_info["monster_kill"]
             player = dict_info["player"]
             shadow_player = dict_info["shadow_player"]
+            loaded = True
+            skill_atributed = True
 
     if choice == str(6):
         game = False
