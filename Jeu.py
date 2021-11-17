@@ -74,18 +74,16 @@ while game:
         shadow_player.mana = player.mana
         input("Press any key to continue \n")
 
-
     if player.level % 2 == 0 and not skill_atributed:
         player.add_skill(Functions.random_skills(player.show_skill_list()))
-        print(f"You got the skill : {player.show_skill_list()[len(player.show_skill_list())-1]['name']}")
-        Functions.display_skill(player.show_skill_list()[len(player.show_skill_list())-1])
+        print(f"You got the skill : {player.show_skill_list()[len(player.show_skill_list()) - 1]['name']}")
+        Functions.display_skill(player.show_skill_list()[len(player.show_skill_list()) - 1])
         Functions.clear()
         skill_atributed = True
-    if player.level % 2 != 0 :
+    if player.level % 2 != 0:
         skill_atributed = False
 
     if shadow_player.mana > player.mana:
         shadow_player.mana = player.mana
     shadow_player.level = player.level
     shadow_player.xp = player.xp
-

@@ -1,6 +1,7 @@
 import time
 from Core import Functions
 
+
 def game_explain():
     print("Hello player... ")
     print("You just appeared in the tour... it means that's you have to participate in the tour game !")
@@ -8,6 +9,7 @@ def game_explain():
           "it ?")
     print("But don't worry each 10 levels you will encounter a boss and have to face them !")
     print("May the luck be your side...")
+
 
 def upgrade_stat(player, shadow_player):
     print("You leveled up !! you're now level " + str(player.show_level()))
@@ -17,7 +19,8 @@ def upgrade_stat(player, shadow_player):
     print(f"3 : mana ( max :  {player.mana} | left : {shadow_player.mana} )")
     print()
 
-def display_info (name, stat_hero, level):
+
+def display_info(name, stat_hero, level):
     print(f"Actually you are level {level} !")
     print("You have " + str(stat_hero["hp"]) + " hp ")
     print("You have " + str(stat_hero["atk"]) + " atk ")
@@ -35,6 +38,7 @@ def arena_end(name):
     print(f"So you did it ! Well played !! {name}")
     print("Now comes a new  challenge...")
     print()
+
 
 def boss_enter(name):
     print(f"You did it all the way to the boss {name}")
@@ -62,16 +66,19 @@ def boss_enter(name):
     time.sleep(1.5)
     clear()
 
-def clear ():
+
+def clear():
     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
 
 def monster_apparition(monster):
     print("A " + monster + " appear and wants to attack you...")
     print("Get ready to fight !")
     print()
 
+
 def skills_choose(name, new_skill):
-    if new_skill :
+    if new_skill:
         skill_name = new_skill["name"]
         skill_description = new_skill["description"]
 
@@ -81,6 +88,7 @@ def skills_choose(name, new_skill):
     else:
         print("You already have every skills of the game !! Incredible !")
 
+
 def object_gain(object):
     object_name = object["name"]
     object_description = object["description"]
@@ -89,20 +97,20 @@ def object_gain(object):
     print(f"Your ability is : {object_name}, {object_description}")
     print()
 
-def menu(arena, player, monster_left):
 
+def menu(arena, player, monster_left):
     print("=============================================")
     print(f"Your current Arena is : {arena['name']}")
     print(f"You need to defeat {monster_left} monsters to go to the next arena")
     print(f"You are currently are level {player.level} and have {player.hp} hp")
     print("1 - Start a fight")
     print("2 - Stats")
-    print("3 - Save")
-    print("4 - Load")
-    print("5 - Leave")
+    print("3 - Shop")
+    print("4 - Save")
+    print("5 - Load")
+    print("6 - Leave")
     print("=============================================")
     print("\n\n\n")
-
 
 
 def figth_start():
@@ -115,7 +123,4 @@ def figth_start():
     print("                     -------------                       ")
     print("                         ------                          ")
     print("⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻NEW FIGHT⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻")
-    Functions.space(),    Functions.space()
-
-
-
+    Functions.space(), Functions.space()

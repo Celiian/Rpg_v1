@@ -1,11 +1,15 @@
 import dataclasses
 
 
-class Inventory:
-    item_list = []
-    potion_list = []
+class InventoryPlayer:
 
-    def __init__(self):
+    def __init__(self, item_list=None, potion_list=None):
+        if item_list is None:
+            item_list = []
+        if potion_list is None:
+            potion_list = []
+        self.item_list = item_list
+        self.potion_list = potion_list
         self.item_size = 30
         self.potion_size = 10
 

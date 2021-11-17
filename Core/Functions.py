@@ -5,8 +5,9 @@ from os import listdir
 import Dictionnary.Skill_dictionnary
 import Monster_class.Monster
 from Core import MessageFunctions
-from Dictionnary import Monster_dictionnary
+from Dictionnary import Monster_dictionnary, Potions
 from Hero_class import Mage, Assasin, Paladin
+from Inventory import InventoryPlayer, Item
 import os
 
 level_list = []
@@ -15,8 +16,10 @@ for i in range(1, 30):
     x = int(math.log10(i) * 1000)
     level_list.append(x)
 
+
 def file_is_empty(path):
-    return os.stat(path).st_size==0
+    return os.stat(path).st_size == 0
+
 
 def character_create():
     print("So.. Player... What's your name ?")
@@ -81,6 +84,7 @@ def character_create():
         rand = "SR"
     clear()
     player.add_skill(random_skill(player.show_skill_list(), rand))
+    shadow_player.skill_list = player.skill_list
     print(f"You got the skill : {player.show_skill_list()[0]['name']}")
     display_skill(player.show_skill_list()[0])
     clear()
@@ -171,9 +175,6 @@ def random_skill(list_skill, rand):
     y = 0
     skills = Dictionnary.Skill_dictionnary.skills()
 
-    if len(list_skill) == len(skills) + 1:
-        return
-
     valid_skill = False
     while not valid_skill:
 
@@ -256,14 +257,43 @@ def display_stat(player, shadow_player):
     print(f"You have : \n {shadow_player.hp} hp left \n {player.atk} atk \n {shadow_player.mana} mana left")
     print(f"Your max hp is : {player.hp}, your max mana is : {player.mana}")
     print("------------------------------------------------------")
-    print("Press 1 to consult your skills or 0 to go back ")
+    print("Press 1 to consult your skills, 2 to consult your inventory or 0 to go back ")
     space(), space(), space()
     choice = int(input())
     if choice == 1:
         clear()
         display_skills(player)
+    if choice == 2:
+        clear()
+        display_inventory(player)
+
     else:
         return
+
+
+def display_inventory(player):
+    print("Press 1 to see your potions, 2 to see your items or 0 to go back")
+    choice = int(input())
+    if choice == 1:
+        player.inventory.show_potions()
+    if choice == 2:
+        player.inventory.show_item()
+
+
+def potion_add_random(player):
+    potion_random = random_potion()
+    potion = Item.Item(potion_random['name'], potion_random['type'], potion_random['effect_type'],
+                       potion_random['effect'], potion_random['price'], potion_random['duration'],
+                       potion_random['description'])
+    player.inventory.add_item(potion)
+
+
+def potion_add(player, name):
+    potion_random = return_potion(name)
+    potion = Item.Item(potion_random['name'], potion_random['type'], potion_random['effect_type'],
+                       potion_random['effect'], potion_random['price'], potion_random['duration'],
+                       potion_random['description'])
+    player.inventory.add_item(potion)
 
 
 def display_skills(player):
@@ -358,6 +388,7 @@ def monster_fight(level, shadow_player, player):
             print(f"You have {shadow_player.hp} hp left and {shadow_player.mana} mana left")
             print("1 : Attack")
             print("2 : skills")
+            print("3 : potions")
             print("")
             choice = int(input())
 
@@ -398,12 +429,26 @@ def monster_fight(level, shadow_player, player):
                                 choice_done = True
                             else:
                                 print("You don't have enough mana to use this skill \n")
+            if choice == 3:
+                player.inventory.show_potions()
+                print("Press a potion number to use it or 0 to go back")
+                choice = int(input())
+                if choice != 0:
+                    potion_used = player.inventory.potion_list[choice - 1]
+                    player.inventory.use_potion(shadow_player, player, potion_used)
 
         if monster.hp <= 0:
             print("You killed the monster !")
             xp_dict = Dictionnary.Monster_dictionnary.xp_monster()
             xp_received = xp_dict[str(level)]
             xp_up(player, xp_received, shadow_player)
+
+            rand = random.randrange(100)
+            print("You got 15 gold !")
+            player.money += 15
+            if rand > 60:
+                potion_add_random(player)
+                print("you found a new potion !")
             return True
 
         dmg_done = monster.damage()
@@ -467,6 +512,7 @@ def arena_up(actual_arena):
     arena = arenas[actual_arena]
     return arena
 
+
 def find_skill(rarity, name):
     """
     choose a random skill
@@ -479,32 +525,109 @@ def find_skill(rarity, name):
     for i in range(1, len(under_skill_list)):
         skill = under_skill_list[str(i)]
 
-
         if skill['name'] == name[1:].replace("'", ""):
             return skill
-
 
     return skill
 
 
+def random_potion():
+    potion_list = Dictionnary.Potions.potion()
+    choose = str(random.randrange(len(potion_list)) + 1)
+    potion_choosen = potion_list[choose]
+
+    return potion_choosen
 
 
+def return_potion(name):
+    potion_list = Dictionnary.Potions.potion()
+    for i in range(1, len(potion_list) + 1):
+        if potion_list[str(i)]['name'] == name:
+            potion_choosen = potion_list[str(i)]
+
+    return potion_choosen
 
 
+def shop(player):
+    potion_list = Dictionnary.Potions.potion()
+    cost = potion_list["1"]['price']
+    print(cost)
+    choiceDone = False
+    while not choiceDone:
+        print("----------------------------------------------------------------\n"
+              "   |        |              WELCOME                 |        |   \n"
+              "   |        |                                      |        |   \n"
+              "   0        |                                      |        0   \n"
+              "            |                                      |            \n"
+              "            |                                      |            \n"
+              "            |                                      |            \n"
+              "            |                                      |            \n"
+              "            |                                      |            \n"
+              "            |                                      |            \n"
+              "------------|--------------------------------------|------------\n"
+              "  |     |   0            \TO THE SHOP/             0   |     |  \n"
+              "  |     |                                              |     |  \n"
+              "  0     |                                              |     0  \n"
+              "        |                                              |        \n"
+              "        |                                              |        \n"
+              "        |___🧪____          ___🧪____          ___🧪____|        \n"
+              "        |        |_________|        |_________|        |        \n"
+              "        |        |         |        |         |        |        \n"
+              "        |________|_________|________|_________|________|        \n"
+              f"                                         Balance :{player.money}\n"
+              )
+        print("This Shop have 3 potions to sell --> \n"
+              "1 - 🧪 Force Potion (Augment temporarily your attack)\n"
+              "2 - 🧪 Life Potion (Restore a few Hp)\n"
+              "3 - 🧪 Mana Potion (Restore a few Mana)")
+        print("Which one do you want to buy ? ( press 0 to go back) \n")
+        choice = int(input(""))
+        if choice == 0:
+            choiceDone = True
+        if choice == 1:
+            print("Do you want to buy a force potion ? (y/n)")
+            choice = input()
+            if choice == "y":
+                if player.inventory.potion_size != 0:
+                    if player.money >= cost:
+                        potion_add(player, "force potion")
+                        print(f"You just bought a Force Potion fo {cost}")
+                        player.money -= cost
+                        choiceDone = True
+                    else:
+                        print("You don't have enough gold...")
+                        input("press any key to continue \n")
+                else:
+                    print("You already have too much potion !")
 
+        if choice == 2:
+            print("Do you want to buy a Life potion ? (y/n)")
+            choice = input()
+            if choice == "y":
+                if player.inventory.potion_size != 0:
+                    if player.money >= cost:
+                        potion_add(player, "life potion")
+                        player.money -= cost
+                        print(f"You just bought a Life Potion fo {cost}")
+                        choiceDone = True
+                    else:
+                        print("You don't have enough gold...")
+                        input("press any key to continue \n")
+                else:
+                    print("You already have too much potion !")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if choice == 3:
+            print("Do you want to buy a Mana potion ? (y/n) ")
+            choice = input()
+            if choice == "y":
+                if player.inventory.potion_size != 0:
+                    if player.money >= cost:
+                        potion_add(player, "mana potion")
+                        print(f"You just bought a Mana Potion fo {cost}")
+                        player.money -= cost
+                        choiceDone = True
+                    else:
+                        print("You don't have enough gold...")
+                        input("press any key to continue \n")
+                else:
+                    print("You already have too much potion !")
