@@ -19,15 +19,6 @@ def upgrade_stat(player, shadow_player):
     print(f"3 : mana ( max :  {player.mana} | left : {shadow_player.mana} )")
     print()
 
-
-def display_info(name, stat_hero, level):
-    print(f"Actually you are level {level} !")
-    print("You have " + str(stat_hero["hp"]) + " hp ")
-    print("You have " + str(stat_hero["atk"]) + " atk ")
-    print("You have " + str(stat_hero["mana"]) + " mana")
-    print()
-
-
 def arena_enter(name, arena_name):
     print(f"Welcome  in {arena_name}  {name} ")
     print("May the luck be on your side...")

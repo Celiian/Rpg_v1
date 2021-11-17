@@ -251,19 +251,24 @@ def level_display(player):
 
 
 def display_stat(player, shadow_player):
-    print("------------------------------------------------------")
-    level_display(player)
-    print(f"You have : \n {shadow_player.hp} hp left \n {player.atk} atk \n {shadow_player.mana} mana left")
-    print(f"Your max hp is : {player.hp}, your max mana is : {player.mana}")
-    print("------------------------------------------------------")
-    print("Press 1 to consult your skills, 2 to consult your inventory or 0 to go back ")
-    space(), space(), space()
-    choice = int(input())
+    try_except = False
+    while not try_except:
+        try:
+            print("------------------------------------------------------")
+            level_display(player)
+            print(f"You have : \n {shadow_player.hp} hp left \n {player.atk} atk \n {shadow_player.mana} mana left")
+            print(f"Your max hp is : {player.hp}, your max mana is : {player.mana}")
+            print(f"Class - {player.class_name}")
+            print("------------------------------------------------------")
+            print("Press 1 to consult your skills, 2 to consult your inventory or 0 to go back ")
+            space(), space(), space()
+            choice = int(input())
+            try_except = True
+        except ValueError as e:
+            print("Please choose a valid option")
     if choice == 1:
-        clear()
         display_skills(player)
     if choice == 2:
-        clear()
         display_inventory(player)
 
     else:
@@ -271,10 +276,17 @@ def display_stat(player, shadow_player):
 
 
 def display_inventory(player):
-    print("Press 1 to see your potions, 2 to see your items or 0 to go back")
-    choice = int(input())
+    try_except = False
+    while not try_except:
+        try:
+            print("Press 1 to see your potions, 2 to see your items or 0 to go back")
+            choice = int(input())
+            try_except = True
+        except ValueError as e:
+            print("Please choose a valid option")
     if choice == 1:
         player.inventory.show_potions()
+        input("Press any key to continue \n")
     if choice == 2:
         player.inventory.show_item()
 
@@ -296,11 +308,17 @@ def potion_add(player, name):
 
 
 def display_skills(player):
-    for i in range(0, len(player.skill_list)):
-        print(f"{i + 1} - {player.skill_list[i]['name']}")
-    print("Press a skill number to see his description or 0 to go back")
-    space(), space(), space(), space(), space()
-    choice = int(input())
+    try_except = False
+    while not try_except:
+        try:
+            for i in range(0, len(player.skill_list)):
+                print(f"{i + 1} - {player.skill_list[i]['name']}")
+            print("Press a skill number to see his description or 0 to go back")
+            space(), space(), space(), space(), space()
+            choice = int(input())
+            try_except = True
+        except ValueError as e:
+            print("Please choose a valid option")
     if choice == 0:
         return
     else:
@@ -309,8 +327,14 @@ def display_skills(player):
 
 
 def stat_level_up(player, shadow_player):
-    MessageFunctions.upgrade_stat(player, shadow_player)
-    choice = int(input())
+    try_except = False
+    while not try_except:
+        try:
+            MessageFunctions.upgrade_stat(player, shadow_player)
+            choice = int(input())
+            try_except = True
+        except ValueError as e:
+            print("Please choose a valid option")
 
     if choice == 1:
 
@@ -383,13 +407,19 @@ def monster_fight(level, shadow_player, player):
 
         choice_done = False
         while not choice_done:
-            print(f"What do you want to do ? The  {monster.name}  have  {monster.hp} hp left")
-            print(f"You have {shadow_player.hp} hp left and {shadow_player.mana} mana left")
-            print("1 : Attack")
-            print("2 : skills")
-            print("3 : potions")
-            print("")
-            choice = int(input())
+            try_except = False
+            while not try_except:
+                try:
+                    print(f"What do you want to do ? The  {monster.name}  have  {monster.hp} hp left")
+                    print(f"You have {shadow_player.hp} hp left and {shadow_player.mana} mana left")
+                    print("1 : Attack")
+                    print("2 : skills")
+                    print("3 : potions")
+                    print("")
+                    choice = int(input())
+                    try_except = True
+                except ValueError as e:
+                    print("Please choose a valid option")
 
             if choice == 1:
                 deg = shadow_player.dmg_done()
@@ -404,18 +434,30 @@ def monster_fight(level, shadow_player, player):
                 choice_skill_done = False
 
                 while not choice_skill_done:
-                    for i in range(0, len(shadow_player.skill_list)):
-                        print(f"{i + 1} - {shadow_player.skill_list[i]['name']}")
-                    print("Press a skill number to see his description or 0 to go back \n")
-                    choice = int(input())
+                    try_except = False
+                    while not  try_except:
+                        try:
+                            for i in range(0, len(shadow_player.skill_list)):
+                                print(f"{i + 1} - {shadow_player.skill_list[i]['name']}")
+                            print("Press a skill number to see his description or 0 to go back \n")
+                            choice = int(input())
+                            try_except = True
+                        except ValueError as e:
+                            print("Please choose a valid option")
                     if choice == 0:
                         choice_skill_done = True
                     elif choice - 1 <= len(shadow_player.skill_list) - 1:
-                        print(shadow_player.skill_list[choice - 1]["description"])
-                        skill = shadow_player.skill_list[choice - 1]
-                        print(f"Do you want to use {skill['name']} ?")
-                        print("1 : Yes | 2 : No")
-                        choice2 = int(input())
+                        try_except = False
+                        while not try_except:
+                            try:
+                                print(shadow_player.skill_list[choice - 1]["description"])
+                                skill = shadow_player.skill_list[choice - 1]
+                                print(f"Do you want to use {skill['name']} ?")
+                                print("1 : Yes | 2 : No")
+                                choice2 = int(input())
+                                try_except = True
+                            except ValueError as e:
+                                print("Please choose a valid option")
                         if choice2 == 1:
                             mana = skill["mana"]
                             if shadow_player.mana >= mana:
@@ -430,9 +472,16 @@ def monster_fight(level, shadow_player, player):
                             else:
                                 print("You don't have enough mana to use this skill \n")
             if choice == 3:
-                player.inventory.show_potions()
-                print("Press a potion number to use it or 0 to go back")
-                choice = int(input())
+                try_except = False
+                while not try_except:
+                    try:
+                        player.inventory.show_potions()
+                        print("Press a potion number to use it or 0 to go back")
+                        choice = int(input())
+                        try_except = True
+                    except ValueError as e:
+                        print("Please choose a valid option")
+
                 if choice != 0:
                     potion_used = player.inventory.potion_list[choice - 1]
                     player.inventory.use_potion(shadow_player, player, potion_used)
@@ -581,37 +630,45 @@ def return_potion(name):
 def shop(player):
     potion_list = Dictionnary.Potions.potion()
     cost = potion_list["1"]['price']
-    print(cost)
     choiceDone = False
     while not choiceDone:
-        print("----------------------------------------------------------------\n"
-              "   |        |              WELCOME                 |        |   \n"
-              "   |        |                                      |        |   \n"
-              "   0        |                                      |        0   \n"
-              "            |                                      |            \n"
-              "            |                                      |            \n"
-              "            |                                      |            \n"
-              "            |                                      |            \n"
-              "            |                                      |            \n"
-              "            |                                      |            \n"
-              "------------|--------------------------------------|------------\n"
-              "  |     |   0            \TO THE SHOP/             0   |     |  \n"
-              "  |     |                                              |     |  \n"
-              "  0     |                                              |     0  \n"
-              "        |                                              |        \n"
-              "        |                                              |        \n"
-              "        |___🧪____          ___🧪____          ___🧪____|        \n"
-              "        |        |_________|        |_________|        |        \n"
-              "        |        |         |        |         |        |        \n"
-              "        |________|_________|________|_________|________|        \n"
-              f"                                         Balance :{player.money}\n"
-              )
-        print("This Shop have 3 potions to sell --> \n"
-              "1 - 🧪 Force Potion (Augment temporarily your attack)\n"
-              "2 - 🧪 Life Potion (Restore a few Hp)\n"
-              "3 - 🧪 Mana Potion (Restore a few Mana)")
-        print("Which one do you want to buy ? ( press 0 to go back) \n")
-        choice = int(input(""))
+        try_except = False
+        while not try_except:
+            try:
+                print("|——————————————————————————————————————————————————————————————|\n"
+                      "   |        |\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|        |   \n"
+                      "   |        |              WELCOME                 |        |   \n"
+                      "   0        |                                      |        0   \n"
+                      "   •        |                                      |        •   \n"
+                      "   •        |                                      |        •   \n"
+                      "            |                                      |            \n"
+                      "            |                                      |            \n"
+                      "|———————————|--------------------------------------|—————————|\n"
+                      "  |     |\/ 0\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/0 \/|     |  \n"
+                      "  |     |                 TO THE SHOP                  |     |  \n"
+                      "  0     |                                              |     0  \n"
+                      "  •     |                                              |     •  \n"
+                      "  •     |                                              |     •  \n"
+                      "        |___🧪____          ___🧪____          ___🧪____|        \n"
+                      "        |        |_________|        |_________|        |        \n"
+                      "        |        |         |        |         |        |        \n"
+                      "        |________|_________|________|_________|________|        \n"
+                      f"                            •       •  Balance :{player.money}🪙\n"
+                      "                            •       •                           \n"
+                      "                            •       •                           \n"
+                      "                            •       •                           \n"
+                      "                           •         •                           \n"
+                      )
+                print("This Shop have 3 potions to sell --> \n"
+                      "1 - 🧪 Force Potion (Augment temporarily your attack)\n"
+                      "2 - 🧪 Life Potion (Restore a few Hp)\n"
+                      "3 - 🧪 Mana Potion (Restore a few Mana)")
+                print("Which one do you want to buy ? ( press 0 to go back) \n")
+                choice = int(input(""))
+                try_except = True
+            except ValueError as e:
+                print("Please choose a valid option")
+
         if choice == 0:
             choiceDone = True
         if choice == 1:

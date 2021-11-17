@@ -118,83 +118,93 @@ def save_choose(player, shadow_player, arena, actual_arena, monster_kill):
     file3_empty = True
     choiceDone = False
     while not choiceDone:
-        try:
-            if os.path.exists(file1):
-                file1_empty = Functions.file_is_empty(file1)
-                if file1_empty:
+        try_except = False
+        while not try_except:
+            try:
+                if os.path.exists(file1):
+                    file1_empty = Functions.file_is_empty(file1)
+                    if file1_empty:
+                        print("1 - [EMPTY]")
+                    else:
+                        print("1 - [USED]")
+                else:
                     print("1 - [EMPTY]")
+                if os.path.exists(file2):
+                    file2_empty = Functions.file_is_empty(file2)
+                    if file2_empty:
+                        print("2 - [EMPTY]")
+                    else:
+                        print("2 - [USED]")
                 else:
-                    print("1 - [USED]")
-            else:
-                print("1 - [EMPTY]")
-            if os.path.exists(file2):
-                file2_empty = Functions.file_is_empty(file2)
-                if file2_empty:
                     print("2 - [EMPTY]")
+                if os.path.exists(file3):
+                    file3_empty = Functions.file_is_empty(file3)
+                    if file3_empty:
+                        print("3 - [EMPTY]")
+                    else:
+                        print("3 - [USED]")
                 else:
-                    print("2 - [USED]")
-            else:
-                print("2 - [EMPTY]")
-            if os.path.exists(file3):
-                file3_empty = Functions.file_is_empty(file3)
-                if file3_empty:
                     print("3 - [EMPTY]")
-                else:
-                    print("3 - [USED]")
-            else:
-                print("3 - [EMPTY]")
 
-            print("Which slot do you want to use ?")
-            choice = int(input())
-            choiceDone = True
-        except ValueError as e:
-            print("Please choose a valid option")
-            pass
+                print("Which slot do you want to use ? Press 0 to go back")
+                choice = int(input())
+                try_except = True
+            except ValueError as e:
+                print("Please choose a valid option")
         choiceDone2 = False
-    while not choiceDone2:
-        if choice == 1:
-            if file1_empty:
-                list_file = [file1, inventoryFile1]
-                dict_save["list_file"] = list_file
-                choiceDone2 = True
-            else:
-                print("Do you really want to erase data ? (y/n)")
-                choice2 = input()
-                if choice2 == "y":
+        while not choiceDone2:
+            if choice == 1:
+                if file1_empty:
                     list_file = [file1, inventoryFile1]
                     dict_save["list_file"] = list_file
                     choiceDone2 = True
+                    choiceDone = True
                 else:
-                    choiceDone2 = True
-        if choice == 2:
-            if file2_empty:
-                list_file = [file2, inventoryFile2]
-                dict_save["list_file"] = list_file
-                choiceDone2 = True
-            else:
-                print("Do you really want to erase data ? (y/n)")
-                choice2 = input()
-                if choice2 == "y":
+                    print("Do you really want to erase data ? (y/n)")
+                    choice2 = input()
+                    if choice2 == "y":
+                        list_file = [file1, inventoryFile1]
+                        dict_save["list_file"] = list_file
+                        choiceDone2 = True
+                        choiceDone = True
+                    else:
+                        choiceDone2 = True
+            elif choice == 2:
+                if file2_empty:
                     list_file = [file2, inventoryFile2]
                     dict_save["list_file"] = list_file
                     choiceDone2 = True
+                    choiceDone = True
                 else:
-                    choiceDone2 = True
-        if choice == 3:
-            if file3_empty:
-                list_file = [file3, inventoryFile3]
-                dict_save["list_file"] = list_file
-                choiceDone2 = True
-            else:
-                print("Do you really want to erase data ? (y/n)")
-                choice2 = input()
-                if choice2 == "y":
+                    print("Do you really want to erase data ? (y/n)")
+                    choice2 = input()
+                    if choice2 == "y":
+                        list_file = [file2, inventoryFile2]
+                        dict_save["list_file"] = list_file
+                        choiceDone2 = True
+                        choiceDone = True
+                    else:
+                        choiceDone2 = True
+            elif choice == 3:
+                if file3_empty:
                     list_file = [file3, inventoryFile3]
                     dict_save["list_file"] = list_file
                     choiceDone2 = True
                 else:
-                    choiceDone2 = True
-
+                    print("Do you really want to erase data ? (y/n)")
+                    choice2 = input()
+                    if choice2 == "y":
+                        list_file = [file3, inventoryFile3]
+                        dict_save["list_file"] = list_file
+                        choiceDone2 = True
+                    else:
+                        choiceDone2 = True
+                        choiceDone = True
+            elif choice == 0:
+                return
+            else:
+                print("Please choose a valid option")
+                choiceDone2 = True
     save(dict_save)
 
 
@@ -210,54 +220,59 @@ def load_choose():
     file3_empty = True
     choiceDone = False
     while not choiceDone:
-        try:
-            if os.path.exists(file1):
-                file1_empty = Functions.file_is_empty(file1)
-                if file1_empty:
+        try_except = False
+        while not try_except:
+            try:
+                if os.path.exists(file1):
+                    file1_empty = Functions.file_is_empty(file1)
+                    if file1_empty:
+                        print("1 - [EMPTY]")
+                    else:
+                        print("1 - [USED]")
+                else:
                     print("1 - [EMPTY]")
+                if os.path.exists(file2):
+                    file2_empty = Functions.file_is_empty(file2)
+                    if file2_empty:
+                        print("2 - [EMPTY]")
+                    else:
+                        print("2 - [USED]")
                 else:
-                    print("1 - [USED]")
-            else:
-                print("1 - [EMPTY]")
-            if os.path.exists(file2):
-                file2_empty = Functions.file_is_empty(file2)
-                if file2_empty:
                     print("2 - [EMPTY]")
+                if os.path.exists(file3):
+                    file3_empty = Functions.file_is_empty(file3)
+                    if file3_empty:
+                        print("3 - [EMPTY]")
+                    else:
+                        print("3 - [USED]")
                 else:
-                    print("2 - [USED]")
-            else:
-                print("2 - [EMPTY]")
-            if os.path.exists(file3):
-                file3_empty = Functions.file_is_empty(file3)
-                if file3_empty:
                     print("3 - [EMPTY]")
-                else:
-                    print("3 - [USED]")
-            else:
-                print("3 - [EMPTY]")
-            print("0 - Cancel")
+                print("0 - Cancel")
 
-            print("Which slot do you want to use ?")
-            choice = int(input())
-            choiceDone = True
-        except ValueError as e:
-            print("Please choose a valid option")
-            pass
+                print("Which slot do you want to use ?")
+                choice = int(input())
+                try_except = True
+            except ValueError as e:
+                print("Please choose a valid option")
         choiceDone2 = False
         while not choiceDone2:
             if choice == 1:
                 list_file = [file1, inventoryFile1]
                 choiceDone2 = True
+                choiceDone = True
             elif choice == 2:
                 list_file = [file2, inventoryFile2]
                 choiceDone2 = True
+                choiceDone = True
             elif choice == 3:
                 list_file = [file3, inventoryFile3]
                 choiceDone2 = True
+                choiceDone = True
             elif choice == 0:
                 return 0
             else:
                 print("Please choose a valid option")
+                choiceDone2 = True
 
     dict_info = load(list_file)
     return dict_info
