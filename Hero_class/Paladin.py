@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass
 from Hero_class.Hero import HeroStats
 from Inventory import InventoryPlayer
@@ -7,7 +8,8 @@ from Inventory import InventoryPlayer
 class PaladinStat(HeroStats):
     skill_list = []
 
-    def __init__(self, name=None, atk=17, hp=130, mana=120, speed=30, xp=0, level=1, skill_list=None, money=0, inventory=None):
+    def __init__(self, name=None, atk=17, hp=130, mana=120, speed=30, xp=0, level=1, skill_list=None, money=0,
+                 inventory=None):
         super().__init__(name, xp, level)
         if skill_list is None:
             skill_list = []
@@ -24,8 +26,6 @@ class PaladinStat(HeroStats):
         self.skill_list = skill_list
         self.atk_boost = self.atk
         self.money = money
-
-
 
     def showStat(self):
         print(f"name : {self.name} / atk : {self.atk} / hp : {self.hp} / mana : {self.mana} / speed : {self.speed}")

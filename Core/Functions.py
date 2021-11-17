@@ -31,7 +31,6 @@ def character_create():
 
     if choice == "n":
         while True:
-            clear()
             print("Please enter your name ")
             name = input()
             print(f"{name} am I right ? (y / n)")
@@ -394,7 +393,8 @@ def monster_fight(level, shadow_player, player):
 
             if choice == 1:
                 deg = shadow_player.dmg_done()
-                monster.hp = int(monster.hp) - deg
+                dmg_taken = monster.dmg_taken(deg)
+                monster.hp -= dmg_taken
 
                 print(f"You did {deg} damage")
                 print(f"The monster have {monster.hp} hp left \n\n")
@@ -420,7 +420,7 @@ def monster_fight(level, shadow_player, player):
                             mana = skill["mana"]
                             if shadow_player.mana >= mana:
                                 shadow_player.mana = shadow_player.mana - mana
-                                dmg = use_skill(skill, monster.type, shadow_player)
+                                dmg = use_skill(skill, monster.type, shadow_player, monster)
                                 monster.hp = int(monster.hp) - dmg
                                 print(f"You did {dmg} damages to {monster.name} ")
                                 print(f"You used {mana} mana to use this skill")
@@ -442,6 +442,10 @@ def monster_fight(level, shadow_player, player):
             xp_dict = Dictionnary.Monster_dictionnary.xp_monster()
             xp_received = xp_dict[str(level)]
             xp_up(player, xp_received, shadow_player)
+            skill = class_skill(player.class_name, player.level, player)
+            if skill != "none":
+                player.add_skill(skill)
+                shadow_player.skill_list = player.skill_list
 
             rand = random.randrange(100)
             print("You got 15 gold !")
@@ -454,7 +458,6 @@ def monster_fight(level, shadow_player, player):
         dmg_done = monster.damage()
         dmg_taken = shadow_player.dmg_taken(dmg_done)
         shadow_player.hp = shadow_player.hp - dmg_taken
-        print(f"{monster.name} attacked you !")
         print(f"You took {dmg_taken} damages. You have {shadow_player.hp} hp left \n")
 
         if shadow_player.hp <= 0:
@@ -462,14 +465,14 @@ def monster_fight(level, shadow_player, player):
             return False
 
 
-def degat(player):
+def damage(player):
     atk = player.atk
     rand = (random.randrange(40) - 20)
     deg = int((atk * rand / 100) + atk)
     return deg
 
 
-def use_skill(skill_used, defense_type, shadow_player):
+def use_skill(skill_used, defense_type, shadow_player, monster):
     if skill_used["effect_type"] == "dmg":
         dmg = skill_used["dmg"]
         type = skill_used["type"]
@@ -481,8 +484,35 @@ def use_skill(skill_used, defense_type, shadow_player):
         return deg
 
     elif skill_used["effect_type"] == "def":
-        protection = skill_used["protection"]
-        shadow_player.protection = protection
+        shadow_player.protection = skill_used["protection"]
+        shadow_player.protection_turn = skill_used["duration"]
+        return 0
+
+    elif skill_used["effect_type"] == "mix":
+        if skill_used["effect"] == "stun":
+            monster.receive_effect(skill_used["effect"], 0, skill_used["duration"])
+        dmg = skill_used["dmg"]
+        type = skill_used["type"]
+
+        prc = atribute_advantage(type, defense_type)
+
+        deg = int((dmg * prc / 100) + dmg)
+
+        return deg
+
+    elif skill_used["effect_type"] == "effect":
+        if skill_used["effect"] == "accuracy":
+            monster.receive_effect(skill_used["effect"], 0, skill_used["duration"])
+            return 0
+        elif skill_used["effect"] == "restoration":
+            shadow_player.add_buff("restoration", skill_used["heal"], skill_used["duration"])
+            return 0
+        elif skill_used["effect"] == "atk_buff":
+            shadow_player.add_buff("atk_buff", skill_used["buff"], skill_used["duration"])
+            return 0
+        elif skill_used["effect"] == "poison":
+            monster.receive_effect(skill_used["effect"], skill_used["dmg"], skill_used["duration"])
+            return 0
 
 
 def atribute_advantage(atk_type, defense_type):
@@ -631,3 +661,19 @@ def shop(player):
                         input("press any key to continue \n")
                 else:
                     print("You already have too much potion !")
+
+
+def class_skill(class_name, level, player):
+    list_skill = player.skill_list
+    skills = Dictionnary.Skill_dictionnary.skills()
+
+    under_skill_list = skills["class"][class_name]
+    if str(level) in under_skill_list:
+        skill = under_skill_list[str(level)]
+        for i in range(0, len(list_skill)):
+            if skill == list_skill[i]:
+                return "none"
+        print(f"You got a new class skill : {skill['name']} - {skill['description']}")
+        return skill
+    else:
+        return "none"

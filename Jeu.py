@@ -5,19 +5,18 @@ from Inventory import Item, InventoryPlayer
 
 game = True
 loaded = False
-if not Functions.file_is_empty('Saves/save'):
-    print("Do you want to load the saved data ? (y / n)")
-    choice = input()
+print("Do you want to load the saved data ? (y / n)")
+choice = input()
 
-    if choice == "y":
-        dict_info = Save_load.load_choose()
-        if dict_info != 0:
-            actual_arena = dict_info["actual_arena"]
-            monster_kill = dict_info["monster_kill"]
-            player = dict_info["player"]
-            shadow_player = dict_info["shadow_player"]
-            loaded = True
-            skill_atributed = True
+if choice == "y":
+    dict_info = Save_load.load_choose()
+    if dict_info != 0:
+        actual_arena = dict_info["actual_arena"]
+        monster_kill = dict_info["monster_kill"]
+        player = dict_info["player"]
+        shadow_player = dict_info["shadow_player"]
+        loaded = True
+        skill_atributed = True
 
 if not loaded:
     Functions.space()
@@ -77,7 +76,7 @@ while game:
         shadow_player.mana = player.mana
         input("Press any key to continue \n")
 
-    if player.level % 2 == 0 and not skill_atributed:
+    if player.level % 5 == 0 and not skill_atributed:
         player.add_skill(Functions.random_skills(player.show_skill_list()))
         print(f"You got the skill : {player.show_skill_list()[len(player.show_skill_list()) - 1]['name']}")
         Functions.display_skill(player.show_skill_list()[len(player.show_skill_list()) - 1])

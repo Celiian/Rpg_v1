@@ -118,8 +118,9 @@ def skills():
                 "effect": "none",
                 "rarity": "R",
                 "protection": 20,
+                "duration": 3,
                 "mana": 20,
-                "description": "Water Shield is a spell that reduce the damage taken by 20%. This skill cost "
+                "description": "Water Shield is a spell that reduce the damage taken by 20% for 3 turn. This skill cost "
                                "20 mana",
             },
             "4": {
@@ -215,7 +216,6 @@ def skills():
             },
         },
 
-
         "SSR": {
             "1": {
                 "name": "Fire Dragon ",
@@ -235,8 +235,9 @@ def skills():
                 "effect": "none",
                 "rarity": "SSR",
                 "protection": 100,
+                "duration": 2,
                 "mana": 20,
-                "description": "The Wall Stone is a spell that prevent the caster from receiving damage,"
+                "description": "The Wall Stone is a spell that prevent the caster from receiving damage for 2 turn,"
                                "This skill cost 20 mana",
             },
             "3": {
@@ -245,10 +246,11 @@ def skills():
                 "effect_type": "mix",
                 "effect": "stun",
                 "rarity": "SSR",
+                "duration": 1,
                 "dmg": 55,
                 "mana": 15,
                 "description": "Ice Block is a special spell that stun the enemy for 1 turn and  deal "
-                               "55 water damage.This skill cost 15 mana",
+                               "55 water damage.This skill cost 45 mana",
             },
             "4": {
                 "name": "Golem of Stone ",
@@ -285,5 +287,42 @@ def skills():
                                " volcano, dealing 80 fire damage. This skill costs 55 mana",
             },
         },
+
+        "class": {
+            "paladin": {
+                "2": {
+                    "name": "Heal",
+                    "effect_type": "effect",
+                    "effect": "restoration",
+                    "heal": 20,
+                    "mana": 30,
+                    "duration": 3,
+                    "description": "This skill is exclusive to the paladins and will heal you over time,"
+                                   "regenerating 20 hp each turn for 3 turn. This skill costs 30 mana",
+                }
+            },
+            "assassin": {
+                "2": {
+                    "name": "Poison",
+                    "effect_type": "effect",
+                    "effect": "poison",
+                    "dmg": 15,
+                    "mana": 30,
+                    "duration": 3,
+                    "description": "This skill is exclusive to the assassins and will poison your enemy,"
+                                   "dealing him 15 dmg each turn for 3 turn. This skill costs 30 mana"},
+            },
+            "mage": {
+                "2": {
+                    "name": "Magic strength",
+                    "effect_type": "effect",
+                    "effect": "atk_buff",
+                    "buff": 15,
+                    "mana": 30,
+                    "duration": 3,
+                    "description": "This skill is exclusive to the mages and will augment your attack,"
+                                   "reinforcing it of 15 each turn for 3 turn. This skill costs 30 mana"},
+            }
+        }
     }
     return types
