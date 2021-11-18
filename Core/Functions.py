@@ -260,7 +260,7 @@ def display_stat(player, shadow_player):
             print(f"Your max hp is : {player.hp}, your max mana is : {player.mana}")
             print(f"Class - {player.class_name}")
             print("------------------------------------------------------")
-            print("Press 1 to consult your skills, 2 to consult your inventory or 0 to go back ")
+            print("Press 1 to consult your skills, 2 to consult your inventory, 3 to consult your class info or 0 to go back ")
             space(), space(), space()
             choice = int(input())
             try_except = True
@@ -270,7 +270,16 @@ def display_stat(player, shadow_player):
         display_skills(player)
     if choice == 2:
         display_inventory(player)
-
+    if choice == 3:
+        if player.class_name == "paladin":
+            MessageFunctions.paladin_description()
+            input("\n\n     Press any key to continue")
+        if player.class_name == "mage":
+            MessageFunctions.Mage_description()
+            input("\n\n     Press any key to continue")
+        if player.class_name == "assassin":
+            MessageFunctions.assassin_description()
+            input("\n\n     Press any key to continue")
     else:
         return
 
