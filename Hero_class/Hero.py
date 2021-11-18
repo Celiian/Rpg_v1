@@ -52,7 +52,6 @@ class HeroStats:
 
     def dmg_done(self):
         additional_damage = 0
-        self.atk_boost = self.atk
         for i in range(0, len(self.effect_list)):
             effect = self.effect_list[i]
             if effect.effect_type == "atk_buff":
@@ -60,9 +59,11 @@ class HeroStats:
                 effect.turn_left -= 1
                 if effect.turn_left == 0:
                     self.effect_list.remove(self.effect_list[i])
-        print(f"You did {additional_damage} additional damage !")
+        if additional_damage != 0:
+            print(f"You did {additional_damage} additional damage !")
         rand = (random.randrange(40) - 20)
-        dmg = int((self.atk_boost+additional_damage * rand / 100) + self.atk_boost+additional_damage)
+        atk = self.atk + additional_damage
+        dmg = int((atk * rand / 100) + atk)
         return dmg
 
     def show_skill_list(self):

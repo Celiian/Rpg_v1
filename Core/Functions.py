@@ -386,6 +386,14 @@ def monster_fight(level, shadow_player, player):
     monster = Monster_class.Monster.Monster_stat(monster_dict['name'], monster_dict['atk'], monster_dict['hp'],
                                                  monster_dict['mana'], monster_dict['speed'], monster_dict['type'])
 
+    if monster.name == "Wolf":
+        MessageFunctions.wolf()
+    elif monster.name == "Skeleton":
+        MessageFunctions.skeleton()
+    elif monster.name == "Glob":
+        MessageFunctions.glob()
+    elif monster.name == "Goblin":
+        MessageFunctions.goblin()
     print(f"You have to deal with a {monster.name}")
     print(f"The {monster.name} have {monster.hp} hp, {monster.atk} atk, {monster.mana} mana,"
           f" {monster.speed} speed and is {monster.type} attribute.")
